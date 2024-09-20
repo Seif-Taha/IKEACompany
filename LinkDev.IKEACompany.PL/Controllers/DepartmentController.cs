@@ -80,6 +80,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
 
         public IActionResult Details(int? id)
         {
+
             if (id is null)
                 return BadRequest();
 
@@ -89,6 +90,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
                 return NotFound();
 
             return View(department);
+
 
         }
 
