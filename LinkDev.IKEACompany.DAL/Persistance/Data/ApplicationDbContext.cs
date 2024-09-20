@@ -18,7 +18,7 @@ namespace LinkDev.IKEACompany.DAL.Persistance.Data
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //    => optionsBuilder.UseSqlServer("Server= .; Database = IKEACompany ; Trusted_Connection = True; TrustServerCertificate = True;");
+        //    => optionsBuilder.UseSqlServer("Server= .; Database = IKEA ; Trusted_Connection = True; TrustServerCertificate = True;");
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
