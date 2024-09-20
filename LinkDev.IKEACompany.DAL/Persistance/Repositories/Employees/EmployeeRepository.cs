@@ -1,4 +1,4 @@
-﻿using LinkDev.IKEACompany.DAL.Models.Departments;
+﻿using LinkDev.IKEACompany.DAL.Models.Employees;
 using LinkDev.IKEACompany.DAL.Persistance.Data;
 using LinkDev.IKEACompany.DAL.Persistance.Repositories._Generic;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LinkDev.IKEACompany.DAL.Persistance.Repositories.Departments
+namespace LinkDev.IKEACompany.DAL.Persistance.Repositories.Employees
 {
-    public class DepartmentRepository : GenericRepository<Department> ,IDepartmentRepository
+    public class EmployeeRepository : GenericRepository<Employee> , IEmployeeRepository
     {
-
-        public DepartmentRepository(ApplicationDbContext dbContext):base(dbContext)
+        public EmployeeRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             
         }
