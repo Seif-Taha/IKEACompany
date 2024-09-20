@@ -1,5 +1,7 @@
 ﻿using LinkDev.IKEACompany.BLL.Models.Departments;
 using LinkDev.IKEACompany.BLL.Services.Departments;
+using LinkDev.IKEACompany.DAL.Models.Departments;
+using LinkDev.IKEACompany.PL.ViewModels.Departments;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEACompany.PL.Controllers
@@ -29,6 +31,8 @@ namespace LinkDev.IKEACompany.PL.Controllers
         }
 
 
+        #region Create
+        
         [HttpGet]
         public IActionResult Create()
         {
@@ -64,19 +68,30 @@ namespace LinkDev.IKEACompany.PL.Controllers
                 _logger.LogError(ex, ex.Message);
 
                 // 2. Set Friendly Message 
-                if (_environment.IsDevelopment())
-                {
-                    message = ex.Message;
-                    return View(department);
-                }
-                else
-                {
-                    message = "Department is Not Created";
-                    return View("Error", message);
-                }
+
+                message = _environment.IsDevelopment() ? ex.Message : "Department is Not Created";
+
+                ///if (_environment.IsDevelopment())
+                ///{
+                ///    message = ex.Message;
+                ///    return View(department);
+                ///}
+                ///else
+                ///{
+                ///    message = "Department is Not Created";
+                ///    return View("Error", message);
+                ///}
             }
 
+            ModelState.AddModelError(string.Empty, message);
+            return View(department);
+
         }
+
+        #endregion
+
+
+        #region Details
 
         public IActionResult Details(int? id)
         {
@@ -93,6 +108,94 @@ namespace LinkDev.IKEACompany.PL.Controllers
 
 
         }
+
+        #endregion
+
+
+        #region Edit
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var department = _departmentService.GetDepartmentById(id.Value);
+
+            if (department is null)
+                return NotFound();
+
+            return View(new DepartmentEditViewModel()
+            {
+                Code = department.Code,
+                Name = department.Name,
+                Description = department.Description,
+                CreationDate = department.CreationDate,
+            });
+
+        }
+
+        [HttpPost]
+        public IActionResult Edit([FromRoute] int id, DepartmentEditViewModel departmentVM)
+        {
+            if (!ModelState.IsValid)
+                return View(departmentVM);
+
+            var message = string.Empty;
+
+            try
+            {
+
+                var departmentToUpdate = new UpdatedDepartmentDto()
+                {
+                    Id = id,
+                    Code = departmentVM.Code,
+                    Name = departmentVM.Name,
+                    Description = departmentVM.Description,
+                    CreationDate = departmentVM.CreationDate,
+                };
+
+                var updated = _departmentService.UpdateDepartment(departmentToUpdate) > 0;
+
+                if (updated)
+                    return RedirectToAction(nameof(Index));
+
+                message = "an error Has occurd during updateing the department :( ";
+
+
+            }
+            catch (Exception ex)
+            {
+                // 1. Log Exception
+                _logger.LogError(ex, ex.Message);
+
+                // 2. Set Message
+                message = _environment.IsDevelopment() ? ex.Message : "an error Has occurd during updateing the department :(";
+
+
+                ///if (_environment.IsDevelopment()) 
+                ///{
+                ///message=ex.Message;
+                ///    return View(department);
+                ///}
+                ///else 
+                ///{
+                ///    message = "an error Has occurd during updateing the department :(";
+                ///    return View("Erorr",message);
+                ///}  
+                
+            }
+
+            ModelState.AddModelError(string.Empty, message);
+            return View(departmentVM);
+
+        }
+
+        #endregion
+
+
+
+
 
     }
 }

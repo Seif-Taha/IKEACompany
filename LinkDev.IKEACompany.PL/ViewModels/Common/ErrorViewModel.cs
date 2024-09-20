@@ -1,4 +1,4 @@
-namespace LinkDev.IKEACompany.PL.ViewModels
+namespace LinkDev.IKEACompany.PL.ViewModels.Common
 {
     public class ErrorViewModel
     {
