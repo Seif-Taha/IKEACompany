@@ -8,6 +8,9 @@ namespace LinkDev.IKEACompany.PL.Controllers
 {
     public class DepartmentController : Controller
     {
+
+        #region Services
+
         private readonly IDepartmentService _departmentService;
         private readonly ILogger<DepartmentController> _logger;
         private readonly IWebHostEnvironment _environment;
@@ -22,17 +25,24 @@ namespace LinkDev.IKEACompany.PL.Controllers
             _environment = environment;
         }
 
+        #endregion
+
+
+        #region Index
+
         [HttpGet]
         public IActionResult Index()
         {
             var departments = _departmentService.GetAllDepartments();
 
             return View(departments);
-        }
+        } 
+
+        #endregion
 
 
         #region Create
-        
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -194,7 +204,48 @@ namespace LinkDev.IKEACompany.PL.Controllers
         #endregion
 
 
+        #region Delete
 
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var department = _departmentService.GetDepartmentById(id.Value);
+
+            if (department is null)
+                return NotFound();
+
+            return View(department);
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var message = string.Empty;
+
+            try
+            {
+                var deleted = _departmentService.DeleteDepartment(id);
+                if (deleted)
+                    return RedirectToAction(nameof(Index));
+                message = "an error Has occurd during deleting the department :(";
+            }
+            catch (Exception ex)
+            {
+                // 1. Log Exception
+                _logger.LogError(ex, ex.Message);
+
+                // 2. Set Message
+                message = _environment.IsDevelopment() ? ex.Message : "an error Has occurd during deleting the department :(";
+            }
+            ModelState.AddModelError(string.Empty, message);
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
 
 
     }
