@@ -1,4 +1,5 @@
 ﻿using LinkDev.IKEACompany.DAL.Models.Departments;
+using LinkDev.IKEACompany.DAL.Models.Employees;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace LinkDev.IKEACompany.DAL.Persistance.Data
 
 
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
 
     }
 }
