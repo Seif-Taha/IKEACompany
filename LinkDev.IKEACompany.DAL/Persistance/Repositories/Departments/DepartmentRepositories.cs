@@ -27,7 +27,12 @@ namespace LinkDev.IKEACompany.DAL.Persistance.Repositories.Departments
 
         }
 
-        public Department? GetById(int id)
+        public IQueryable<Department> GetAllAsIQueryable()
+        {
+            return _dbcontext.Departments;
+        }
+
+        public Department? Get(int id)
         {
             ///var department = _dbcontext.Departments.Local.FirstOrDefault(D => D.Id == id);
             ///if(department is null)
