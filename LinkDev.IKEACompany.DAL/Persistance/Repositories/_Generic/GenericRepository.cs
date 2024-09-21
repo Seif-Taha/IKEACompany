@@ -19,9 +19,9 @@ namespace LinkDev.IKEACompany.DAL.Persistance.Repositories._Generic
         public IEnumerable<T> GetAll(bool WithAsNoTracking = true)
         {
             if (WithAsNoTracking)
-                return _dbContext.Set<T>().AsNoTracking().ToList();
+                return _dbContext.Set<T>().Where(X=>!X.IsDeleted).AsNoTracking().ToList();
 
-            return _dbContext.Set<T>().ToList();
+            return _dbContext.Set<T>().Where(X => !X.IsDeleted).ToList();
         }
         public IQueryable<T> GetAllAsQueryable()
         {
