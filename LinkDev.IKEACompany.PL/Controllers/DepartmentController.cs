@@ -34,7 +34,13 @@ namespace LinkDev.IKEACompany.PL.Controllers
         public IActionResult Index()
         {
 
+            /// 1. ViewData is a Dictionary Type Property 
 
+            ViewData["Message"] = " Hello ";
+
+            /// 2. ViewBag is a Dynamic Type Property 
+
+            ViewBag.Message = " ViewBag ";
 
 
             var departments = _departmentService.GetAllDepartments();
