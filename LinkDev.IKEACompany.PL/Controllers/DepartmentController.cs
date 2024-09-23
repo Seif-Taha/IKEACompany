@@ -34,13 +34,13 @@ namespace LinkDev.IKEACompany.PL.Controllers
         public IActionResult Index()
         {
 
-            /// 1. ViewData is a Dictionary Type Property 
+            ///// 1. ViewData is a Dictionary Type Property 
 
-            ViewData["Message"] = " Hello ";
+            //ViewData["Message"] = " Hello ";
 
-            /// 2. ViewBag is a Dynamic Type Property 
+            ///// 2. ViewBag is a Dynamic Type Property 
 
-            ViewBag.Message = " ViewBag ";
+            //ViewBag.Message = " ViewBag ";
 
 
             var departments = _departmentService.GetAllDepartments();
@@ -79,16 +79,21 @@ namespace LinkDev.IKEACompany.PL.Controllers
                 };
 
 
-                var result = _departmentService.CreateDepartment(departmentToCreate);
+                var created = _departmentService.CreateDepartment(departmentToCreate) > 0;
 
-                if (result > 0)
-                    return RedirectToAction(nameof(Index));
-                else
+                if (!created) 
                 {
-                    message = "Department is Not Created";
-                    ModelState.AddModelError(string.Empty, message);
-                    return View(departmentVM);
+                    message = "Department is Created"; 
                 }
+                //else
+                //{
+                //    TempData["Message"] = "Department is not Created";
+                //}
+
+                ModelState.AddModelError(string.Empty, message);
+                return View(departmentVM);
+
+                //return RedirectToAction(nameof(Index));
 
             }
             catch (Exception ex)
@@ -100,6 +105,10 @@ namespace LinkDev.IKEACompany.PL.Controllers
                 // 2. Set Friendly Message 
 
                 message = _environment.IsDevelopment() ? ex.Message : "Department is Not Created";
+
+                TempData["Message"] = message;
+
+                return RedirectToAction(nameof(Index));
 
                 ///if (_environment.IsDevelopment())
                 ///{
@@ -113,8 +122,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
                 ///}
             }
 
-            ModelState.AddModelError(string.Empty, message);
-            return View(departmentVM);
+
 
         }
 
