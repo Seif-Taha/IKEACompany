@@ -18,7 +18,7 @@ namespace LinkDev.IKEACompany.BLL.Models.Departments
         public string Code { get; set; } = null!;
         public string Name { get; set; } = null!;
 
-        [Display(Name="Date Of Creation")]
+        [Display(Name = "Date Of Creation")]
         public DateOnly CreationDate { get; set; }
 
 

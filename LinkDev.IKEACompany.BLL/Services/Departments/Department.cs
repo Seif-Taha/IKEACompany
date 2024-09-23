@@ -22,37 +22,16 @@ namespace LinkDev.IKEACompany.BLL.Services.Departments
 
         public IEnumerable<DepartmentToReturnDto> GetAllDepartments()
         {
-            var departments = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentToReturnDto()
+            var departments = _departmentRepository.GetAllAsQueryable().Select(D => new DepartmentToReturnDto()
             {
-                Id = department.Id,
-                Code = department.Code,
-                Name = department.Name,
-                CreationDate = department.CreationDate,
+                Id = D.Id,
+                Code = D.Code,
+                Name = D.Name,
+                CreationDate = D.CreationDate,
+
             }).AsNoTracking().ToList();
 
             return departments;
-
-        }
-
-        public DepartmentDetailsToReturnDto? GetDepartmentById(int id)
-        {
-            var department = _departmentRepository.Get(id);
-
-            if (department != null)
-                return new DepartmentDetailsToReturnDto
-                {
-                    Id = department.Id,
-                    Code = department.Code,
-                    Name = department.Name,
-                    Description = department.Description,
-                    CreationDate = department.CreationDate,
-                    CreatedBy = department.CreatedBy,
-                    CreatedOn = department.CreatedOn,
-                    LastModifiedBy = department.LastModifiedBy,
-                    LastModifiedOn = department.LastModifiedOn,
-                };
-
-            return null;
 
         }
 
@@ -76,7 +55,7 @@ namespace LinkDev.IKEACompany.BLL.Services.Departments
 
         public int UpdateDepartment(UpdatedDepartmentDto departmentDto)
         {
-            var department = new LinkDev.IKEACompany.DAL.Models.Departments.Department()
+            var department = new Department()
             {
                 Id = departmentDto.Id,
                 Code = departmentDto.Code,
@@ -87,7 +66,7 @@ namespace LinkDev.IKEACompany.BLL.Services.Departments
                 LastModifiedOn = DateTime.UtcNow,
             };
 
-            return _departmentRepository.Add(department);
+            return _departmentRepository.Update(department);
         }
 
         public bool DeleteDepartment(int id)
@@ -99,6 +78,28 @@ namespace LinkDev.IKEACompany.BLL.Services.Departments
 
             return false;
 
+        }
+
+        public DepartmentDetailsToReturnDto? GetDepartmentById(int id)
+        {
+            if (id == null)
+                return null;
+
+            var department = _departmentRepository.Get(id);
+
+            if (department is null)
+                return null;
+            return new DepartmentDetailsToReturnDto()
+            {
+                Id = department.Id,
+                Code = department.Code,
+                Name = department.Name,
+                Description = department.Description,
+                CreationDate = department.CreationDate,
+                CreatedOn = department.CreatedOn,
+                LastModifiedBy = department.LastModifiedBy,
+                LastModifiedOn = department.LastModifiedOn,
+            };
         }
     }
 }

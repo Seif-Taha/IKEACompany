@@ -1,6 +1,8 @@
 using LinkDev.IKEACompany.BLL.Services.Departments;
+using LinkDev.IKEACompany.BLL.Services.Employees;
 using LinkDev.IKEACompany.DAL.Persistance.Data;
 using LinkDev.IKEACompany.DAL.Persistance.Repositories.Departments;
+using LinkDev.IKEACompany.DAL.Persistance.Repositories.Employees;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.IKEACompany.PL
@@ -26,7 +28,8 @@ namespace LinkDev.IKEACompany.PL
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
-
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             ///builder.Services.AddScoped<ApplicationDbContext>();
             ///builder.Services.AddScoped<DbContextOptions<ApplicationDbContext>>(); 
