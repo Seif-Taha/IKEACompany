@@ -22,7 +22,7 @@ namespace LinkDev.IKEACompany.BLL.Services.Departments
 
         public IEnumerable<DepartmentToReturnDto> GetAllDepartments()
         {
-            var departments = _departmentRepository.GetAllAsQueryable().Select(D => new DepartmentToReturnDto()
+            var departments = _departmentRepository.GetIQueryable().Select(D => new DepartmentToReturnDto()
             {
                 Id = D.Id,
                 Code = D.Code,
