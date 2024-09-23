@@ -55,7 +55,7 @@ namespace LinkDev.IKEACompany.BLL.Services.Departments
 
         public int UpdateDepartment(UpdatedDepartmentDto departmentDto)
         {
-            var department = new LinkDev.IKEACompany.DAL.Models.Departments.Department()
+            var department = new Department()
             {
                 Id = departmentDto.Id,
                 Code = departmentDto.Code,
@@ -66,7 +66,7 @@ namespace LinkDev.IKEACompany.BLL.Services.Departments
                 LastModifiedOn = DateTime.UtcNow,
             };
 
-            return _departmentRepository.Add(department);
+            return _departmentRepository.Update(department);
         }
 
         public bool DeleteDepartment(int id)
