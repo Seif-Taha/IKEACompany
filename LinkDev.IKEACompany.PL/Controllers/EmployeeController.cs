@@ -40,6 +40,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
         }
 
         [HttpPost] // POST:
+        [ValidateAntiForgeryToken]
         public IActionResult Create(CreatedEmployeeDto employee)
         {
             if (!ModelState.IsValid)
@@ -123,6 +124,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
 
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employee)
         {
             if (!ModelState.IsValid)
@@ -156,6 +158,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
         #region Delete
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             var message = string.Empty;
