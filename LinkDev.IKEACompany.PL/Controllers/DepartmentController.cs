@@ -33,6 +33,10 @@ namespace LinkDev.IKEACompany.PL.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+
+
+
+
             var departments = _departmentService.GetAllDepartments();
 
             return View(departments);
@@ -51,16 +55,25 @@ namespace LinkDev.IKEACompany.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreatedDepartmentDto department)
+        public IActionResult Create(DepartmentViewModel departmentVM)
         {
             if (!ModelState.IsValid)
-                return View(department);
+                return View(departmentVM);
 
             var message = string.Empty;
 
             try
             {
-                var result = _departmentService.CreateDepartment(department);
+                var departmentToCreate = new CreatedDepartmentDto()
+                {
+                    Code = departmentVM.Code,
+                    Name = departmentVM.Name,
+                    Description = departmentVM.Description,
+                    CreationDate = departmentVM.CreationDate,
+                };
+
+
+                var result = _departmentService.CreateDepartment(departmentToCreate);
 
                 if (result > 0)
                     return RedirectToAction(nameof(Index));
@@ -68,7 +81,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
                 {
                     message = "Department is Not Created";
                     ModelState.AddModelError(string.Empty, message);
-                    return View(department);
+                    return View(departmentVM);
                 }
 
             }
@@ -95,7 +108,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
             }
 
             ModelState.AddModelError(string.Empty, message);
-            return View(department);
+            return View(departmentVM);
 
         }
 
@@ -136,7 +149,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
             if (department is null)
                 return NotFound();
 
-            return View(new DepartmentEditViewModel()
+            return View(new DepartmentViewModel()
             {
                 Code = department.Code,
                 Name = department.Name,
@@ -148,7 +161,7 @@ namespace LinkDev.IKEACompany.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int id, DepartmentEditViewModel departmentVM)
+        public IActionResult Edit([FromRoute] int id, DepartmentViewModel departmentVM)
         {
             if (!ModelState.IsValid)
                 return View(departmentVM);
